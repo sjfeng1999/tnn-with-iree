@@ -1,22 +1,18 @@
 
-
-set(_TRANSLATE_TOOL_EXECUTABLE $<TARGET_FILE:tnn_translate>)
-
-set(_ARGS)
-list(APPEND _ARGS "-iree-input-type=mhlo")
-list(APPEND _ARGS "-iree-mlir-to-vm-bytecode-module")
-list(APPEND _ARGS "-iree-hal-target-backends=vmvx")
-list(APPEND _ARGS "${PROJECT_SOURCE_DIR}/model/tnn_iree_mnist.mlir")
-list(APPEND _ARGS "-o")
-list(APPEND _ARGS "${PROJECT_SOURCE_DIR}/model/tnn_iree_mnist.vmfb")
-add_custom_target(
-  tnn_module_vmfb
-  COMMAND ${_TRANSLATE_TOOL_EXECUTABLE} ${_ARGS}
-  BYPRODUCTS "tnn_iree_mnist.vmfb"
-  DEPENDS tnn_translate
+iree_compile_vmfb(
+  TARGET
+    tnn_module_vmfb
+  TRANSLATE_TOOL
+    tnn_translate
+  FLAGS 
+    "-iree-input-type=mhlo"
+    "-iree-mlir-to-vm-bytecode-module"
+    "-iree-hal-target-backends=vmvx"
+    "${PROJECT_SOURCE_DIR}/model/tnn_iree_mnist.mlir"
+    "-o" "${PROJECT_SOURCE_DIR}/model/tnn_iree_mnist.vmfb"
+  DEPS
+    tnn_translate
 )
-
-
 
 add_library(tnn_module STATIC "")
 target_sources(tnn_module
@@ -36,7 +32,6 @@ target_link_libraries(tnn_module
   iree_vm_vm
   iree_vm_cc
 )
-
 
 
 add_executable(tnn_modules_runtime "")
