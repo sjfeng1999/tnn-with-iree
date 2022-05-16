@@ -1,6 +1,7 @@
 # TNN with IREE
 
 ## Roadmap
-- [ ] tnn-dialect
-- [ ] iree-tnn-module
+- [x] tnn-dialect
+- [x] iree-tnn-module
 - [ ] tnn-struct to iree-buffer
+- [ ] tnn-runtime
