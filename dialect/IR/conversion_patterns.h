@@ -1,0 +1,36 @@
+// Copyright 2019 The IREE Authors
+//
+// Licensed under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+#ifndef IREE_SAMPLES_CUSTOM_MODULES_DIALECT_CONVERSION_PATTERNS_H_
+#define IREE_SAMPLES_CUSTOM_MODULES_DIALECT_CONVERSION_PATTERNS_H_
+
+#include "mlir/Pass/Pass.h"
+#include "mlir/Transforms/DialectConversion.h"
+
+namespace mlir {
+namespace iree_compiler {
+namespace IREE {
+namespace tnn {
+
+
+// Populates conversion patterns from the tensor-based custom dialect ops to the
+// HAL buffer-based ones.
+void populateCustomToHALPatterns(MLIRContext *context,
+                                 RewritePatternSet &patterns,
+                                 TypeConverter &typeConverter);
+
+// Populates conversion patterns from the custom dialect to the VM dialect.
+void populateCustomToVMPatterns(MLIRContext *context,
+                                SymbolTable &importSymbols,
+                                RewritePatternSet &patterns,
+                                TypeConverter &typeConverter);
+
+}
+}
+}  // namespace iree
+}  // namespace TNN_NS
+
+#endif  // IREE_SAMPLES_CUSTOM_MODULES_DIALECT_CONVERSION_PATTERNS_H_
