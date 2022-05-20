@@ -6,8 +6,8 @@ target_sources(tnn_dialect
     "TnnDialect.cpp"
     "TnnOps.h.inc"
     "TnnOps.cc.inc"
-    "conversion_patterns.h"
-    "conversion_patterns.cpp"
+    "ConversionPatterns.h"
+    "ConversionPatterns.cpp"
 )
 target_include_directories(tnn_dialect
   PUBLIC
@@ -20,7 +20,6 @@ target_include_directories(tnn_dialect
     ${IREE_BINARY_DIR}/third_party/llvm-project/llvm/include
     ${IREE_BINARY_DIR}/third_party/llvm-project/llvm/tools/mlir/include
 )
-
 target_link_libraries(tnn_dialect
   tnn_imports
   LLVMSupport
@@ -34,8 +33,8 @@ target_link_libraries(tnn_dialect
   iree_compiler_Dialect_Util_IR_IR
   iree_compiler_Dialect_VM_Conversion_Conversion
 )
-
 target_compile_options(tnn_dialect PRIVATE "-fno-rtti")
+
 
 mlir_tblgen_library(
   TARGET 
@@ -47,16 +46,17 @@ mlir_tblgen_library(
     -gen-op-defs TnnOps.cc.inc
 )
 
+
 set(_ARGS)
-list(APPEND _ARGS "--output_header=tnn.imports.h")
-list(APPEND _ARGS "--output_impl=tnn.imports.c")
-list(APPEND _ARGS "--identifier=tnn_imports")
+list(APPEND _ARGS "--output_header=Tnn.imports.h")
+list(APPEND _ARGS "--output_impl=Tnn.imports.c")
+list(APPEND _ARGS "--identifier=Tnn_imports")
 list(APPEND _ARGS "--flatten")
 list(APPEND _ARGS "${CMAKE_CURRENT_SOURCE_DIR}/tnn.imports.mlir")
 add_custom_command(
   OUTPUT
-    "tnn.imports.h"
-    "tnn.imports.c"
+    "Tnn.imports.h"
+    "Tnn.imports.c"
   COMMAND generate_embed_data ${_ARGS}
   DEPENDS generate_embed_data tnn.imports.mlir
 )
@@ -64,8 +64,8 @@ add_custom_command(
 add_library(tnn_imports STATIC "")
 target_sources(tnn_imports
   PRIVATE
-    tnn.imports.c
-    tnn.imports.h
+    Tnn.imports.c
+    Tnn.imports.h
 )
 
 
