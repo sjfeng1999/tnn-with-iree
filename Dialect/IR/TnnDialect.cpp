@@ -67,7 +67,7 @@ Type TnnDialect::parseType(DialectAsmParser &parser) const {
 
 void TnnDialect::printType(Type type, DialectAsmPrinter &p) const {
     if (type.isa<TnnBlob>()) {
-        p << "TnnBlob";
+        p << "blob";
     } else {
         assert(false && "unknown type");
     }

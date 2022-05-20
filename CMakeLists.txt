@@ -13,7 +13,7 @@ include(iree_compile)
 
 add_subdirectory(third_party/iree EXCLUDE_FROM_ALL)
 
-add_subdirectory(dialect)
+add_subdirectory(Dialect)
 add_subdirectory(runtime)
 
 

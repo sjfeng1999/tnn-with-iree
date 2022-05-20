@@ -20,7 +20,7 @@ def Tnn_Dialect : Dialect {
 def Tnn_Blob : DialectType<
     Tnn_Dialect,
     CPred<"$_self.isa<IREE::tnn::TnnBlob>()">,
-    "TnnBlob"> {
+    "blob"> {
 
     let summary = [{
         TNN Data Struct
