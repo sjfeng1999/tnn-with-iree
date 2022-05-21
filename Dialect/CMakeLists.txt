@@ -7,7 +7,11 @@ target_sources(tnn_translate
     tnn_translate.cpp 
     init_dialect.h
 )
-
+target_include_directories(tnn_translate
+  PUBLIC
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR}
+)
 target_link_libraries(tnn_translate
   PUBLIC
     tnn_dialect

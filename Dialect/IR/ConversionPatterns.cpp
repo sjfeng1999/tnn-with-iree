@@ -13,14 +13,26 @@ namespace iree_compiler {
 namespace IREE {
 namespace tnn {
 
+
+void populateTnnToHALPatterns(MLIRContext *context, RewritePatternSet &patterns,
+                              TypeConverter &typeConverter) {
+
+    patterns.insert<HALOpConversion<CastTensorToBlob, CastBufferToBlob>>(
+        context, typeConverter);
+    patterns.insert<HALOpConversion<CastBlobToTensor, CastBlobToBuffer>>(
+        context, typeConverter);
+}
+
+
 void populateTnnToVMPatterns(MLIRContext *context, SymbolTable &importSymbols, RewritePatternSet &patterns,
-                                TypeConverter &typeConverter) {
-                                    
-    patterns.insert<VMImportOpConversion<CastBlobToTensor>>(context, importSymbols, typeConverter,
-                                                            "tnn.cast_blob_to_tensor");
-    patterns.insert<VMImportOpConversion<CastTensorToBlob>>(context, importSymbols, typeConverter,
-                                                            "tnn.cast_tensor_to_blob");
-    patterns.insert<VMImportOpConversion<ReluOp>>(context, importSymbols, typeConverter, "tnn.relu");
+                             TypeConverter &typeConverter) {
+
+    patterns.insert<VMImportOpConversion<CastBlobToBuffer>>(
+        context, importSymbols, typeConverter, "tnn.cast_blob_to_buffer");
+    patterns.insert<VMImportOpConversion<CastBufferToBlob>>(
+        context, importSymbols, typeConverter, "tnn.cast_buffer_to_blob");
+    patterns.insert<VMImportOpConversion<ReluOp>>(
+        context, importSymbols, typeConverter, "tnn.relu");
 }
 
 }  // namespace tnn

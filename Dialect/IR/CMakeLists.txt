@@ -12,6 +12,7 @@ target_sources(tnn_dialect
 target_include_directories(tnn_dialect
   PUBLIC
     ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${IREE_SOURCE_DIR}
     ${IREE_SOURCE_DIR}/third_party/llvm-project/llvm/include
@@ -22,6 +23,7 @@ target_include_directories(tnn_dialect
 )
 target_link_libraries(tnn_dialect
   tnn_imports
+  TnnOpsGenTarget
   LLVMSupport
   MLIRIR
   MLIRParser

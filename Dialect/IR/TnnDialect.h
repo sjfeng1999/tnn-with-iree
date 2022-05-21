@@ -26,7 +26,7 @@ public:
     void printType(Type type, DialectAsmPrinter &p) const override;
 };
 
-class TnnBlob : public Type::TypeBase<TnnBlob, Type, TypeStorage> {
+class Blob : public Type::TypeBase<Blob, Type, TypeStorage> {
 public:
     using Base::Base;
 };
@@ -37,4 +37,4 @@ public:
 }  // namespace mlir
 
 #define GET_OP_CLASSES
-#include "TnnOps.h.inc"
+#include "Dialect/IR/TnnOps.h.inc"

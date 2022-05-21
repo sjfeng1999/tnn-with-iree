@@ -21,6 +21,17 @@ namespace tnn {
 
 namespace {
 
+class TnnToHALConversionInterface : public HALConversionDialectInterface {
+public:
+    using HALConversionDialectInterface::HALConversionDialectInterface;
+
+    void setupConversionTarget(ConversionTarget &target, RewritePatternSet &patterns,
+                               TypeConverter &typeConverter) const override {
+        populateTnnToHALPatterns(getDialect()->getContext(), patterns, typeConverter);
+    }
+};
+
+
 class TnnToVMConversionInterface : public VMConversionDialectInterface {
 public:
     using VMConversionDialectInterface::VMConversionDialectInterface;
@@ -42,13 +53,13 @@ public:
 TnnDialect::TnnDialect(MLIRContext *context)
     : Dialect(getDialectNamespace(), context, TypeID::get<TnnDialect>()) {
 
-    addInterfaces<TnnToVMConversionInterface>();
+    addInterfaces<TnnToHALConversionInterface, TnnToVMConversionInterface>();
 
-    addTypes<TnnBlob>();
+    addTypes<Blob>();
 
 #define GET_OP_LIST
     addOperations<
-#include "TnnOps.cc.inc"
+#include "Dialect/IR/TnnOps.cc.inc"
     >();
 }
 
@@ -57,8 +68,9 @@ Type TnnDialect::parseType(DialectAsmParser &parser) const {
     if (failed(parser.parseKeyword(&typeName)))
         return {};
         
-    auto type =
-        llvm::StringSwitch<Type>(typeName).Case("TnnBlob", TnnBlob::get(getContext())).Default(nullptr);
+    auto type = llvm::StringSwitch<Type>(typeName)
+                .Case("blob", Blob::get(getContext()))
+                .Default(nullptr);
     if (!type) {
         parser.emitError(parser.getCurrentLocation()) << "unknown type: " << typeName;
     }
@@ -66,7 +78,7 @@ Type TnnDialect::parseType(DialectAsmParser &parser) const {
 }
 
 void TnnDialect::printType(Type type, DialectAsmPrinter &p) const {
-    if (type.isa<TnnBlob>()) {
+    if (type.isa<Blob>()) {
         p << "blob";
     } else {
         assert(false && "unknown type");
@@ -79,4 +91,4 @@ void TnnDialect::printType(Type type, DialectAsmPrinter &p) const {
 }  // namespace mlir
 
 #define GET_OP_CLASSES
-#include "TnnOps.cc.inc"
+#include "Dialect/IR/TnnOps.cc.inc"

@@ -37,7 +37,10 @@ function(mlir_tblgen_library)
     list(APPEND _OUTPUTS ${CMAKE_CURRENT_BINARY_DIR}/${_FILE})
   endwhile()
 
-  add_custom_target(${_INS_TARGET} DEPENDS ${_OUTPUTS})
-  set_target_properties(${_INS_TARGET} PROPERTIES FOLDER "Tablegenning")
+  add_custom_target(${_INS_TARGET}_target DEPENDS ${_OUTPUTS})
+  set_target_properties(${_INS_TARGET}_target  PROPERTIES FOLDER "Tablegenning")
+
+  add_library(${_INS_TARGET} INTERFACE)
+  add_dependencies(${_INS_TARGET} ${_INS_TARGET}_target)
 endfunction(mlir_tblgen_library)
 
