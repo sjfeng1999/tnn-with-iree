@@ -1,4 +1,6 @@
 
+add_subdirectory(modules)
+
 iree_compile_vmfb(
   TARGET
     tnn_module_vmfb
@@ -12,25 +14,6 @@ iree_compile_vmfb(
     "-o" "${PROJECT_SOURCE_DIR}/model/tnn_iree_mnist.vmfb"
   DEPS
     tnn_translate
-)
-
-add_library(tnn_module STATIC "")
-target_sources(tnn_module
-  PRIVATE
-    "tnn_module.h"
-    "tnn_module.cpp"
-)
-target_include_directories(tnn_module
-  PUBLIC
-    ${IREE_SOURCE_DIR}
-)
-target_link_libraries(tnn_module
-  iree_base_base
-  iree_base_cc
-  iree_hal_hal
-  iree_modules_hal_hal
-  iree_vm_vm
-  iree_vm_cc
 )
 
 
@@ -48,7 +31,6 @@ target_include_directories(tnn_modules_runtime
     ${CMAKE_CURRENT_BINARY_DIR}
     ${IREE_SOURCE_DIR}
 )
-
 target_link_libraries(tnn_modules_runtime
   tnn_module
   iree_base_base
