@@ -12,8 +12,7 @@ namespace iree_compiler {
 namespace IREE {
 namespace tnn {
 
-void populateTnnToHALPatterns(MLIRContext *context,
-                              RewritePatternSet &patterns,
+void populateTnnToHALPatterns(MLIRContext *context, RewritePatternSet &patterns,
                               TypeConverter &typeConverter);
 
 void populateTnnToVMPatterns(MLIRContext *context, SymbolTable &importSymbols, RewritePatternSet &patterns,
