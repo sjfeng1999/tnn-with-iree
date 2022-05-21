@@ -11,6 +11,14 @@ list(APPEND CMAKE_MODULE_PATH
 include(mlir_tblgen)
 include(iree_compile)
 
+set(TNN_ROOT_DIR "/home/sjfeng1999/Develop/TNN")
+set(TNN_INCLUDE_DIR 
+  "${TNN_ROOT_DIR}/include/"
+  "${TNN_ROOT_DIR}/source/"
+)
+message(STATUS " >>>> ${TNN_INCLUDE_DIR}")
+set(TNN_SHARED_LIB_PATH "${TNN_ROOT_DIR}/build/libTNN.so")
+
 add_subdirectory(third_party/iree EXCLUDE_FROM_ALL)
 
 add_subdirectory(Dialect)

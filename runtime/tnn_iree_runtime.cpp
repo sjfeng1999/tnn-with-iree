@@ -20,7 +20,6 @@
 
 #include "runtime/modules/tnn_module.h"
 
-
 int main(int argc, char* argv[]) {
 
     iree_vm_instance_t* instance_        = nullptr;
@@ -87,7 +86,19 @@ int main(int argc, char* argv[]) {
     IREE_CHECK_OK(iree_vm_invoke(context_, function, IREE_VM_INVOCATION_FLAG_NONE,
                                  /*policy=*/nullptr, inputs.get(), outputs.get(), iree_allocator_system()));
 
+    iree_hal_buffer_view_t* ret_buffer_view =
+        (iree_hal_buffer_view_t*)iree_vm_list_get_ref_deref(outputs.get(), 0, iree_hal_buffer_view_get_descriptor());
 
+    float predictions[1 * 10] = {0.1f};
+
+    iree_hal_device_transfer_d2h(hal_device, iree_hal_buffer_view_buffer(ret_buffer_view), 0, predictions,
+        sizeof(predictions), IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout());
+
+    for (int i = 0; i < 10; ++i){
+        printf(" %f, ", predictions[i]);
+    }
+
+    printf(" > release\n");
     iree_hal_device_release(hal_device);
     iree_hal_driver_release(hal_driver);
     // iree_vm_module_release(hal_module_);
